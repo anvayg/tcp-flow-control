@@ -61,8 +61,6 @@ class SWPSender:
         self._recv_thread = threading.Thread(target=self._recv)
         self._recv_thread.start()
 
-        # TODO: Add additional state variables
-
         # Sliding Window variables
         self._last_ack_received = 0     # LAR
         self._last_frame_sent = 0       # LFS
@@ -82,8 +80,6 @@ class SWPSender:
             self._send(data[i:i+SWPPacket.MAX_DATA_SIZE])
 
     def _send(self, data):
-        # TODO
-
         # Wait for free space in the sender window
         self._send_window_not_full.acquire()
 
@@ -110,8 +106,6 @@ class SWPSender:
         return
         
     def _retransmit(self, seq_num):
-        # TODO
-
         # Re-send packet
         logging.debug("Trying to retransmit packet with seq_num: %s" % seq_num)
         self._lock.acquire()
@@ -136,8 +130,6 @@ class SWPSender:
                 continue
             packet = SWPPacket.from_bytes(raw)
             logging.debug("Received: %s" % packet)
-
-            # TODO
 
             # Check that packet is of type ACK
             if packet.type != SWPType.ACK: continue
@@ -183,7 +175,7 @@ class SWPReceiver:
         self._recv_thread = threading.Thread(target=self._recv)
         self._recv_thread.start()
         
-        # TODO: Add additional state variables
+        # State variables
         self._last_acceptable_frame = 0 + self._RECV_WINDOW_SIZE
         self._last_frame_recd = 0
 
@@ -199,8 +191,6 @@ class SWPReceiver:
             raw = self._llp_endpoint.recv()
             packet = SWPPacket.from_bytes(raw)
             logging.debug("Received: %s" % packet)
-            
-            # TODO
 
             # Check if outside window (ignore if so)
             seq_num = packet.seq_num
